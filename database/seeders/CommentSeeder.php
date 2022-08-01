@@ -27,11 +27,13 @@ class CommentSeeder extends Seeder
                 for($i=1;$i<=10;$i++)
                 {
                     Comment::create([
-                        'title' => Str::random(10),
+                        'comment' => Str::random(10),
                         'user_id' => $user->id,
+                        'post_id' => $post->id,
                     ]);
                 }
             }
         }
     }
 }
+
