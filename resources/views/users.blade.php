@@ -12,9 +12,9 @@
 <body>
 
 <div class="container pt-5">
-<input class="form-control" id="filtertxt" type="text" placeholder="Search..">
+<input class="form-control" id="filtertxt" type="text" placeholder="Search by User Name..">
 <button type="button" class="btn btn-primary exportbtn">Export</button>
-<a href="{{ url('export') }}">Export</a>
+<a class="btn btn-primary" href="{{ url('export') }}">Export (All data of User)</a>
   <table class="table">
     <thead class="thead-dark">
       <tr>
@@ -34,7 +34,7 @@
                   <label class="custom-control-label" for="{{$userdata->id}}customCheck">{{$i}}</label>
               </div></td>
       <!-- <td>{{$i}}</td> -->
-        <td>{{$userdata->name}}gdfgd</td>
+        <td>{{$userdata->name}}</td>
         <td>{{$userdata->email}}</td>
       </tr>
       
@@ -42,7 +42,7 @@
             @endforeach
     </tbody>
   </table>
-  <p id="fpara">Paragraph</p>
+  <!-- <p id="fpara">Paragraph</p> -->
 </div>
 
 </body>
@@ -74,10 +74,7 @@ $.ajax({
         //console.log(response);
       },
       error: function(response) {
-        // $('#nameErrorMsg').text(response.responseJSON.errors.name);
-        // $('#emailErrorMsg').text(response.responseJSON.errors.email);
-        // $('#mobileErrorMsg').text(response.responseJSON.errors.mobile);
-        // $('#messageErrorMsg').text(response.responseJSON.errors.message);
+        
       },
       });
 
@@ -92,7 +89,7 @@ $(".exportbtn").click(function(){
      return this.value;
  }).get().join(',');
 
-//  alert("My favourite programming languages are: " + selids);
+
 
 
 
@@ -106,16 +103,25 @@ $(".exportbtn").click(function(){
       data: {"_token": "{{ csrf_token() }}",seldata:seldata},
       //dataType: 'JSON',
       success:function(response){
-      alert(response);
-       // $('#qw').html('');
-       // $('#qw').html(response);
+     
+     
+
+      let blob = new Blob([response], { type: "application/vnd.ms-excel" });
+                let link = URL.createObjectURL(blob);
+                let a = document.createElement("a");
+                a.download = "file.xlsx";
+                a.href = link;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+
+
+     
         //console.log(response);
       },
       error: function(response) {
-        // $('#nameErrorMsg').text(response.responseJSON.errors.name);
-        // $('#emailErrorMsg').text(response.responseJSON.errors.email);
-        // $('#mobileErrorMsg').text(response.responseJSON.errors.mobile);
-        // $('#messageErrorMsg').text(response.responseJSON.errors.message);
+       
       },
       });
 
@@ -125,125 +131,5 @@ $(".exportbtn").click(function(){
 });
 
 
-
-$("#fpara").click(function(){
-//   alert("The paragraph was clicked.");
-
-// var programming = $("input[name='chkid']:checked").map(function() {
-//      return this.value;
-//  }).get().join(',');
-
-
-//  alert("My favourite programming languages are: " + programming);
-
-
-
-
-
-    $.ajax({
-      url: "/submit-form",
-      type:"POST",
-      data:{
-        "_token": "{{ csrf_token() }}",
-        id:1,
-      },
-      success:function(response){
-      
-        $('#qw').html('');
-        $('#qw').html(response);
-        //console.log(response);
-      },
-      error: function(response) {
-        // $('#nameErrorMsg').text(response.responseJSON.errors.name);
-        // $('#emailErrorMsg').text(response.responseJSON.errors.email);
-        // $('#mobileErrorMsg').text(response.responseJSON.errors.mobile);
-        // $('#messageErrorMsg').text(response.responseJSON.errors.message);
-      },
-      });
-
-
-
-
-
-
-
-
-});
-
-
-
-
-// $('#SubmitForm').on('submit',function(e){
-//     e.preventDefault();
-
-//     let name = $('#InputName').val();
-//     let email = $('#InputEmail').val();
-//     let mobile = $('#InputMobile').val();
-//     let message = $('#InputMessage').val();
-    
-//     $.ajax({
-//       url: "/submit-form",
-//       type:"POST",
-//       data:{
-//         "_token": "{{ csrf_token() }}",
-//         name:name,
-//         email:email,
-//         mobile:mobile,
-//         message:message,
-//       },
-//       success:function(response){
-//         $('#successMsg').show();
-//         console.log(response);
-//       },
-//       error: function(response) {
-//         $('#nameErrorMsg').text(response.responseJSON.errors.name);
-//         $('#emailErrorMsg').text(response.responseJSON.errors.email);
-//         $('#mobileErrorMsg').text(response.responseJSON.errors.mobile);
-//         $('#messageErrorMsg').text(response.responseJSON.errors.message);
-//       },
-//       });
-//     });
-
-
-
-
-
-
-
-
-
-
-
-
-// $(document).ready(function () {
-
-// (function ($) {
-
-//     $('#filter').keyup(function () {
-
-//         var rex = new RegExp($(this).val(), 'i');
-//         $('.searchable tr').hide();
-//         $('.searchable tr').filter(function () {
-//             return rex.test($(this).text());
-//         }).show();
-
-//     });
-    
-//     $('#filter2').on('change', function(){
-        
-//         if(this.checked){
-//             $('.searchable tr').hide();
-//             $('.searchable tr').filter(function() {
-//                 return $(this).find('td').eq(3).text() !== "0"
-//             }).show();
-//         }else{
-//             $('.searchable tr').show();
-//         }
-        
-        
-//     });
-
-// }(jQuery));
-
-// });
   </script>
+
