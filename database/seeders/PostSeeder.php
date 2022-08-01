@@ -20,7 +20,7 @@ class PostSeeder extends Seeder
         $users = User::get();
         foreach($users as $user)
         {
-            for($i=1;$i<=10;$i++)
+            for($i=1;$i<=5;$i++)
             {
                 Post::create([
                     'title' => Str::random(10),
