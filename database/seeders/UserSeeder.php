@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -15,11 +16,15 @@ class UserSeeder extends Seeder
     public function run()
     {
         //
-        User::create([
-            'name' => 'Sample Lipsum Lorem',
-            'email' => 'Lipsumsample123@gmail.com',
-            'password' => bcrypt('vertika123456789'),
-        ]);
+        for($i=1;$i<=10;$i++)
+        {
+            User::create([
+                'name' => Str::random(10),
+                'email' => Str::random(10).'@gmail.com',
+                'password' => bcrypt('vertika123456789'),
+            ]);
+        }
+        
 
     }
 }
