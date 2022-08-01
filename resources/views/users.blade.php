@@ -12,10 +12,14 @@
 <body>
 
 <div class="container pt-5">
+<input class="form-control" id="filtertxt" type="text" placeholder="Search..">
+<button type="button" class="btn btn-primary exportbtn">Export</button>
+<a href="{{ url('export') }}">Export</a>
   <table class="table">
     <thead class="thead-dark">
       <tr>
-      <th>S. No.</th>
+        <th>S. No.</th>
+      <!-- <th>S. No.</th> -->
         <th>Name</th>
         <th>Email</th>
       </tr>
@@ -25,8 +29,12 @@
     <?php $i=1; ?>
         @foreach($users as $userdata)
       <tr>
-      <td>{{$i}}</td>
-        <td>{{$userdata->name}}</td>
+        <td><div class="custom-control custom-checkbox">
+                  <input type="checkbox" name="chkid" value="{{$userdata->id}}" class="custom-control-input" id="{{$userdata->id}}customCheck">
+                  <label class="custom-control-label" for="{{$userdata->id}}customCheck">{{$i}}</label>
+              </div></td>
+      <!-- <td>{{$i}}</td> -->
+        <td>{{$userdata->name}}gdfgd</td>
         <td>{{$userdata->email}}</td>
       </tr>
       
@@ -44,8 +52,91 @@
 <script type="text/javascript">
 
 
+
+$('#filtertxt').keyup(function () {
+
+var stext = $('#filtertxt').val();
+//alert(stext);
+
+
+
+$.ajax({
+      url: "/submit-form",
+      type:"POST",
+      data:{
+        "_token": "{{ csrf_token() }}",
+        stxt:stext,
+      },
+      success:function(response){
+      
+        $('#qw').html('');
+        $('#qw').html(response);
+        //console.log(response);
+      },
+      error: function(response) {
+        // $('#nameErrorMsg').text(response.responseJSON.errors.name);
+        // $('#emailErrorMsg').text(response.responseJSON.errors.email);
+        // $('#mobileErrorMsg').text(response.responseJSON.errors.mobile);
+        // $('#messageErrorMsg').text(response.responseJSON.errors.message);
+      },
+      });
+
+
+});
+
+
+$(".exportbtn").click(function(){
+    var seldata = [];
+    var selids = $("input[name='chkid']:checked").map(function() {
+        seldata.push(this.value);
+     return this.value;
+ }).get().join(',');
+
+//  alert("My favourite programming languages are: " + selids);
+
+
+
+    $.ajax({
+      url: "/export-data",
+      type:"POST",
+    //   data:{
+    //     "_token": "{{ csrf_token() }}",
+    //     ids:104,103,
+    //   },
+      data: {"_token": "{{ csrf_token() }}",seldata:seldata},
+      //dataType: 'JSON',
+      success:function(response){
+      alert(response);
+       // $('#qw').html('');
+       // $('#qw').html(response);
+        //console.log(response);
+      },
+      error: function(response) {
+        // $('#nameErrorMsg').text(response.responseJSON.errors.name);
+        // $('#emailErrorMsg').text(response.responseJSON.errors.email);
+        // $('#mobileErrorMsg').text(response.responseJSON.errors.mobile);
+        // $('#messageErrorMsg').text(response.responseJSON.errors.message);
+      },
+      });
+
+
+
+
+});
+
+
+
 $("#fpara").click(function(){
-  alert("The paragraph was clicked.");
+//   alert("The paragraph was clicked.");
+
+// var programming = $("input[name='chkid']:checked").map(function() {
+//      return this.value;
+//  }).get().join(',');
+
+
+//  alert("My favourite programming languages are: " + programming);
+
+
 
 
 
@@ -57,6 +148,7 @@ $("#fpara").click(function(){
         id:1,
       },
       success:function(response){
+      
         $('#qw').html('');
         $('#qw').html(response);
         //console.log(response);
@@ -123,36 +215,35 @@ $("#fpara").click(function(){
 
 
 
-$(document).ready(function () {
+// $(document).ready(function () {
 
-(function ($) {
+// (function ($) {
 
-    $('#filter').keyup(function () {
+//     $('#filter').keyup(function () {
 
-        var rex = new RegExp($(this).val(), 'i');
-        $('.searchable tr').hide();
-        $('.searchable tr').filter(function () {
-            return rex.test($(this).text());
-        }).show();
+//         var rex = new RegExp($(this).val(), 'i');
+//         $('.searchable tr').hide();
+//         $('.searchable tr').filter(function () {
+//             return rex.test($(this).text());
+//         }).show();
 
-    });
+//     });
     
-    $('#filter2').on('change', function(){
+//     $('#filter2').on('change', function(){
         
-        if(this.checked){
-            $('.searchable tr').hide();
-            $('.searchable tr').filter(function() {
-                return $(this).find('td').eq(3).text() !== "0"
-            }).show();
-        }else{
-            $('.searchable tr').show();
-        }
+//         if(this.checked){
+//             $('.searchable tr').hide();
+//             $('.searchable tr').filter(function() {
+//                 return $(this).find('td').eq(3).text() !== "0"
+//             }).show();
+//         }else{
+//             $('.searchable tr').show();
+//         }
         
         
-    });
+//     });
 
-}(jQuery));
+// }(jQuery));
 
-});
+// });
   </script>
-

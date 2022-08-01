@@ -18,5 +18,11 @@ use App\Http\Controllers\UserController;
 //     return view('users');
 // });
 
+// Route::get('/', [UserController::class, "Showusers"]);
+// Route::post('/submit-form', [UserController::class, "ShowajaxData"]);
+
 Route::get('/', [UserController::class, "Showusers"]);
 Route::post('/submit-form', [UserController::class, "ShowajaxData"]);
+Route::post('/export-data', [UserController::class, "ExportajaxData"]);
+
+Route::get('export', [UserController::class, "ExportData"]);
